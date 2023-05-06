@@ -11,6 +11,7 @@ module.exports = {
                 first_name,
                 last_name,
                 email,
+                isAdmin,
                 password
             } = req.body
             // console.log(username, email, password);
@@ -41,6 +42,7 @@ module.exports = {
                 const user = await User.create({
                     first_name,
                     last_name,
+                    isAdmin,
                     email,
                     password: hashedPassword
                 })
