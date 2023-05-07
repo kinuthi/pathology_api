@@ -5,6 +5,43 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     //@route /api/users
+    resetPassword: async (req, res) => {
+        try {
+            const {
+                email,
+                password
+            } = req.body
+            
+            const userExist = await User.findOne({
+                email
+            })
+      
+            const hashedPassword = await bcrypt.hash(password, 10)
+
+
+
+            if (userExist) {
+            const result = await User.updateOne(
+                {email:email}, 
+                {$set : {password: hashedPassword}} 
+           )
+   
+            if (result.modifiedCount === 1) {
+                res.status(200).json({
+                    message: "password updated succefully"
+                })
+            } else {
+                res.status(404).json({
+                    message: "User Not Found"
+                })
+            }
+        }
+        } catch (error) {
+            res.status(500).json({
+                message: error.message,
+            })
+        }
+    },
     registerUsers: async (req, res) => {
         try {
             const {
